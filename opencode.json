@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "openrouter": {
+      "models": {
+        "nvidia/nemotron-3-nano-30b-a3b:free": {
+          "name": "Nvidia Nemotron (Free)"
+        }
+      }
+    }
+  },
+  "agent": {
+    "nemotron": {
+      "mode": "subagent",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:free",
+      "description": "A specialized code logic analyzer. Invoke this agent when you need a second opinion on code logic, a quick security check, or a performance review of a specific function.",
+      "prompt": "You are an expert code analyzer running on Nvidia Nemotron. Your job is to review code snippets for logic errors, security vulnerabilities, and performance bottlenecks. Be concise.",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    }
+  }
+}
