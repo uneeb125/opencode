@@ -9,6 +9,18 @@
       }
     }
   },
+  "mode": {
+    "yolo_mode": {
+      "enabled": false,
+      "permissions": {
+        "edit": "allow",
+        "bash": "allow",
+        "webfetch": "allow",
+        "doom_loop": "allow",
+        "external_directory": "ask"
+      }
+    }
+  },
   "agent": {
     "nemotron": {
       "mode": "subagent",
