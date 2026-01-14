@@ -1,5 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "lsp": {
+    "rust": {
+      "command": [
+        "/home/uneeb/.cargo/bin/lspmux"
+      ],
+      "extensions": [
+        ".rs"
+      ]
+    }
+  },
   "agents": {
     "Sisyphus": {
       "model": "opencode/glm-4.7-free"
