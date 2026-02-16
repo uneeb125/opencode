@@ -1,5 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "formatter": false,
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": {
+      "enabled": true
+    },
+    "diff_style": "auto"
+  },
   "model": "zai-coding-plan/glm-4.7",
   "small_model": "zai-coding-plan/glm-4.5-flash",
   "mode": {
@@ -23,6 +31,9 @@
     }
   },
   "lsp": {
+    "kotlin-ls": {
+      "disabled": true
+    },
     "rust": {
       "command": [
         "/home/uneeb/.cargo/bin/lspmux"
@@ -55,8 +66,8 @@
   "plugin": [
     "@franlol/opencode-md-table-formatter@0.0.3",
     "cc-safety-net",
-    "@tarquinen/opencode-dcp@latest",
     "opencode-handoff",
+    "oh-my-opencode-slim"
   ],
   "agent": {
     "explore": {
