@@ -1,41 +1,24 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
-  "lsp": {
-    "rust": {
-      "command": [
-        "/home/uneeb/.cargo/bin/lspmux"
-      ],
-      "extensions": [
-        ".rs"
-      ]
-    }
-  },
   "agents": {
+    "hephaestus": {
+      "model": "zai-coding-plan/glm-4.7"
+    },
     "sisyphus": {
-      "model": "opencode/big-pickle"
+      "model": "zai-coding-plan/glm-4.7"
+    },
+    "visor": {
+      "model": "zai-coding-plan/glm-4.6v"
+    },
+    "oracle": {
+      "model": "opencode/big-pickle",
+      "variant": "high"
     },
     "librarian": {
       "model": "zai-coding-plan/glm-4.7"
     },
     "explore": {
       "model": "opencode/gpt-5-nano"
-    },
-    "oracle": {
-      "model": "opencode/big-pickle",
-      "variant": "high"
-    },
-    "frontend-ui-ux-engineer": {
-      "model": "opencode/glm-4.7-free"
-    },
-    "document-writer": {
-      "model": "opencode/glm-4.7-free"
-    },
-    "multimodal-looker": {
-      "model": "zai-coding-plan/glm-4.6v"
-    },
-    "prometheus": {
-      "model": "opencode/big-pickle",
-      "variant": "max"
     },
     "metis": {
       "model": "opencode/big-pickle",
@@ -45,8 +28,23 @@
       "model": "opencode/big-pickle",
       "variant": "medium"
     },
+    "multimodal-looker": {
+      "model": "zai-coding-plan/glm-4.6v"
+    },
+    "prometheus": {
+      "model": "zai-coding-plan/glm-4.7"
+    },
     "atlas": {
-      "model": "opencode/big-pickle"
+      "model": "zai-coding-plan/glm-4.7"
+    },
+    "frontend-ui-ux-engineer": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "document-writer": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "multimodal": {
+      "model": "zai-coding-plan/glm-4.6v"
     }
   },
   "categories": {
@@ -56,10 +54,6 @@
     "ultrabrain": {
       "model": "opencode/big-pickle",
       "variant": "xhigh"
-    },
-    "artistry": {
-      "model": "opencode/big-pickle",
-      "variant": "max"
     },
     "quick": {
       "model": "opencode/big-pickle"
@@ -72,6 +66,20 @@
     },
     "writing": {
       "model": "zai-coding-plan/glm-4.7"
+    },
+    "artistry": {
+      "model": "opencode/big-pickle",
+      "variant": "max"
+    }
+  },
+  "lsp": {
+    "rust": {
+      "command": [
+        "/home/uneeb/.cargo/bin/lspmux"
+      ],
+      "extensions": [
+        ".rs"
+      ]
     }
   }
 }

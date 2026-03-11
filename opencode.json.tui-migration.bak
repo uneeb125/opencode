@@ -1,6 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "formatter": false,
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": {
+      "enabled": true
+    },
+    "diff_style": "auto"
+  },
   "model": "zai-coding-plan/glm-4.7",
   "small_model": "zai-coding-plan/glm-4.5-flash",
   "mode": {
@@ -61,7 +68,7 @@
     "@franlol/opencode-md-table-formatter@0.0.3",
     "cc-safety-net",
     "opencode-handoff",
-    "oh-my-opencode"
+    "oh-my-opencode@latest"
   ],
   "agent": {
     "explore": {
@@ -69,17 +76,6 @@
     },
     "general": {
       "disable": true
-    },
-    "visor": {
-      "mode": "subagent",
-      "model": "zai-coding-plan/glm-4.6v",
-      "description": "Use this subagent EXCLUSIVELY for image analysis. The orchestrator will provide an image file path and specific instructions on what information to extract. Your role is to use the look_at tool to examine the image and provide detailed analysis according to the orchestrator's requirements.",
-      "prompt": "You are an image analysis assistant powered by GLM-4.6v. Your ONLY purpose is to analyze images using the look_at tool. When given an image file path, use look_at to examine the image and extract the specific information requested by the orchestrator. Provide detailed, accurate analysis of visual content including text, diagrams, code, diagrams, charts, interfaces, or any other elements visible in the image. Do not perform any other tasks - focus solely on image analysis.",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
     }
   }
 }

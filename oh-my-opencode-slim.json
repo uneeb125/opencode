@@ -17,6 +17,13 @@
         "skills": [],
         "mcps": []
       },
+      "Visor": {
+        "model": "zai-coding-plan/glm-4.6v",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+
       "librarian": {
         "model": "zai-coding-plan/glm-4.7",
         "variant": "low",
@@ -44,6 +51,12 @@
       "fixer": {
         "model": "zai-coding-plan/glm-4.7",
         "variant": "low",
+        "skills": [],
+        "mcps": []
+      },
+      "multimodal": {
+        "model": "zai-coding-plan/glm-4.6v",
+        "variant": "high",
         "skills": [],
         "mcps": []
       }
