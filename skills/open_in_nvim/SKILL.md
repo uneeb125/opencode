@@ -27,17 +27,7 @@ Examples:
 - "nvim main.rs line 99 column 50" → FILENAME=main.rs, LINE=99, COLUMN=50
 - "open /path/to/file.py" → FILENAME=/path/to/file.py, LINE=1, COLUMN=1
 
-### Step 2: Resolve to Absolute Path
-
-Convert the file path to an absolute path using `realpath` or `readlink -f`:
-
-```bash
-realpath <FILENAME>
-```
-
-This ensures nvim receives the full path regardless of whether the user provides a relative or absolute path.
-
-### Step 3: Construct the Kitty Command
+### Step 2: Construct the Kitty Command
 
 Use the following command format:
 
@@ -57,7 +47,7 @@ The command uses:
   - `G` jumps to the specified line
   - `|` moves to the specified column
 
-### Step 4: Execute the Command
+### Step 3: Execute the Command
 
 Run the command using the bash tool.
 
@@ -67,11 +57,6 @@ Run the command using the bash tool.
 
 User request: "open main.rs at line 99"
 
-Resolve path:
-```bash
-realpath main.rs  # → /home/uneeb/.config/opencode/main.rs
-```
-
 Command:
 ```bash
 kitty @ launch --type os-window nvim "+normal! 99G1|" /home/uneeb/.config/opencode/main.rs
@@ -80,11 +65,6 @@ kitty @ launch --type os-window nvim "+normal! 99G1|" /home/uneeb/.config/openco
 **Example 2: Line and column**
 
 User request: "nvim main.rs line 99 column 50"
-
-Resolve path:
-```bash
-realpath main.rs  # → /home/uneeb/.config/opencode/main.rs
-```
 
 Command:
 ```bash
@@ -104,11 +84,6 @@ kitty @ launch --type os-window nvim "+normal! 250G15|" /home/user/project/src/l
 
 User request: "open README.md"
 
-Resolve path:
-```bash
-realpath README.md  # → /home/uneeb/.config/opencode/README.md
-```
-
 Command:
 ```bash
 kitty @ launch --type os-window nvim "+normal! 1G1|" /home/uneeb/.config/opencode/README.md
@@ -118,7 +93,6 @@ kitty @ launch --type os-window nvim "+normal! 1G1|" /home/uneeb/.config/opencod
 
 - The `kitty @ launch --type os-window` command opens a new OS window (not a kitty pane)
 - This requires Kitty to be running and have the remote control feature enabled
-- Always resolve relative paths to absolute paths using `realpath` before passing to nvim
 - Line and column numbers are 1-indexed
 - If only line is specified, column defaults to 1
 - If neither line nor column is specified, both default to 1
