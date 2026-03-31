@@ -2,10 +2,11 @@
   "$schema": "https://opencode.ai/config.json",
   "formatter": false,
   "default_agent": "dumbass",
-  "model": "zai-coding-plan/glm-4.7",
+  "model": "opencode/minimax-m2.5-free",
   "small_model": "zai-coding-plan/glm-4.5-flash",
   "mode": {
     "yolo_mode": {
+      "model":"opencode/minimax-m2.5-free",
       "enabled": false,
       "permission": {
         "edit": "allow",
@@ -16,6 +17,7 @@
       }
     },
     "dumbass": {
+      "model":"opencode/minimax-m2.5-free",
       "permission": {
         "edit": "ask",
         "write": "ask",
