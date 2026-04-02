@@ -94,6 +94,7 @@
       "disable": true
     },
     "visor": {
+      "disable": true,
       "mode": "subagent",
       "model": "zai-coding-plan/glm-4.6v",
       "description": "Use this subagent EXCLUSIVELY for image analysis. The orchestrator will provide an image file path and specific instructions on what information to extract. Your role is to use the look_at tool to examine the image and provide detailed analysis according to the orchestrator's requirements.",
