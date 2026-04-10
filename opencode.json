@@ -1,12 +1,31 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://localhost:1234/v1"
+      },
+      "models": {
+        "google/gemma-4-26b-a4b": {
+          "name": "google/gemma-4-26b-a4b"
+        },
+
+        "gemma-4-e4b-it": {
+          "name": "gemma-4-e4b-it"
+        }
+
+      }
+    }
+  },
   "formatter": false,
   "default_agent": "dumbass",
-  "model": "opencode/minimax-m2.5-free",
-  "small_model": "zai-coding-plan/glm-4.5-flash",
+  "model": "opencode-go/minimax-m2.7",
+  "small_model": "opencode/minimax-m2.5",
   "mode": {
     "yolo_mode": {
-      "model":"opencode/minimax-m2.5-free",
+      "model":"opencode-go/minimax-m2.7",
       "enabled": false,
       "permission": {
         "edit": "allow",
@@ -17,7 +36,7 @@
       }
     },
     "dumbass": {
-      "model":"opencode/minimax-m2.5-free",
+      "model":"opencode-go/minimax-m2.7",
       "permission": {
         "edit": "ask",
         "write": "ask",
@@ -87,6 +106,16 @@
     "opencode-handoff",
   ],
   "agent": {
+    "local": {
+      "description": "Reviews code for best practices and potential issues",
+      "mode": "primary",
+      "model": "lmstudio/gemma-4-e4b-it",
+      "prompt": "You are inside a harness Opencode",
+      "tools": {
+        "write": true,
+        "edit": true
+      }
+    },
     "explore": {
       "disable": true
     },

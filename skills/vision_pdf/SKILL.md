@@ -11,7 +11,7 @@ Extract PDF pages as images and analyze with vision using the current model.
 
 1. **Extract pages as images:**
    ```bash
-   output_dir="/tmp/pdf_vision_$(date +%Y%m%d_%H%M%S)"
+   output_dir="$(pwd)/pdf_vision"
    mkdir -p "$output_dir"
    pdftoppm -jpeg -jpegopt quality=100 -r 500 <file.pdf> "$output_dir/filename"
    ```
@@ -23,7 +23,10 @@ Extract PDF pages as images and analyze with vision using the current model.
    ls "$output_dir"/filename-*.jpg | sort -V
    ```
 
-3. **Analyze** directly with current model - only read 2 images at a time. For multiple pages, process in batches of 2.
+3. **Analyze** - CRITICAL: Only read 1 image per prompt. The model WILL FAIL if multiple images are sent in the same call. For multiple pages:
+   - Read image 1, wait for response
+   - Then read image 2, wait for response
+   - Continue one at a time
 
 4. **Present findings** with page references
 
