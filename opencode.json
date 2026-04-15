@@ -41,6 +41,7 @@
         "bash": {
           "cd *": "allow",
           "rg *": "allow",
+          "ls *": "allow",
           "grep *": "allow",
           "head *": "allow",
           "find *": "allow",
@@ -52,7 +53,10 @@
         },
         "webfetch": "ask",
         "doom_loop": "ask",
-        "external_directory": "ask"
+        "external_directory": {
+          "/tmp/**": "allow",
+          "*": "ask",
+        }
       }
     },
     "question_only": {
@@ -103,7 +107,6 @@
     "cc-safety-net",
     "opencode-handoff",
     "./.opencode/plugins/session-edits.ts",
-    "oh-my-openagent@latest"
   ],
   "agent": {
     "local": {
