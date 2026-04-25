@@ -1,0 +1,34 @@
+{
+  "daily_resources": {
+    "mental": 100,
+    "physical": 80,
+    "willpower": 60
+  },
+  "medication": {
+    "enabled": true,
+    "name": "Short-acting Stimulant",
+    "dose_time": "08:00",
+    "onset_minutes": 45,
+    "peak_hours": [1.0, 3.0],
+    "duration_hours": 5.0,
+    "crash_hours": [5.5, 7.0]
+  },
+  "scheduling": {
+    "auto_schedule_calendar": "AutoSchedule",
+    "buffer_minutes": 15,
+    "recovery_after_deep_work_minutes": 30,
+    "meal_duration_minutes": 30,
+    "bedtime_routine_minutes": 45,
+    "morning_routine_minutes": 30
+  },
+  "categories": {
+    "deep_work": ["coding", "research", "writing", "studying"],
+    "admin": ["email", "calls", "planning", "organizing"],
+    "physical": ["gym", "running", "exercise", "walking"],
+    "food": ["breakfast", "lunch", "dinner", "snack", "food prep"],
+    "recovery": ["meditation", "nap", "rest", "break"],
+    "chores": ["cleaning", "laundry", "dishes", "groceries"],
+    "routine": ["morning routine", "bedtime routine", "hygiene"]
+  },
+  "initialized": true
+}

@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "zai-coding-plan/glm-5.1"
@@ -24,7 +24,7 @@
       ]
     },
     "multimodal-looker": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "zai-coding-plan/glm-4.6v"
@@ -41,7 +41,7 @@
       "model": "opencode-go/glm-5.1"
     },
     "atlas": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"
@@ -49,7 +49,7 @@
       ]
     },
     "sisyphus-junior": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"
@@ -76,7 +76,7 @@
       "model": "opencode-go/minimax-m2.7"
     },
     "unspecified-low": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"
@@ -84,7 +84,7 @@
       ]
     },
     "unspecified-high": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"
@@ -92,7 +92,7 @@
       ]
     },
     "writing": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/kimi-k2.6",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"

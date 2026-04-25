@@ -22,17 +22,6 @@
   "model": "opencode-go/minimax-m2.7",
   "small_model": "opencode/minimax-m2.5",
   "mode": {
-    "yolo_mode": {
-      "model": "opencode-go/minimax-m2.7",
-      "enabled": false,
-      "permission": {
-        "edit": "allow",
-        "bash": "allow",
-        "webfetch": "allow",
-        "doom_loop": "allow",
-        "external_directory": "ask"
-      }
-    },
     "dumbass": {
       "model": "opencode-go/minimax-m2.7",
       "permission": {
@@ -55,16 +44,34 @@
         "doom_loop": "ask",
         "external_directory": {
           "/tmp/**": "allow",
-          "*": "ask",
+          "*": "ask"
         }
       }
     },
-    "question_only": {
-      "enabled": false,
+    "quick": {
+      "model": "opencode-go/qwen3.5-plus",
       "permission": {
-        "edit": "deny",
-        "write": "deny",
-        "bash": "deny"
+        "edit": "ask",
+        "write": "ask",
+        "bash": {
+          "cd *": "allow",
+          "rg *": "allow",
+          "ls *": "allow",
+          "grep *": "allow",
+          "head *": "allow",
+          "find *": "allow",
+          "*": "ask",
+          "git *": "ask",
+          "git status *": "ask",
+          "git commit *": "deny",
+          "git push *": "deny"
+        },
+        "webfetch": "allow",
+        "doom_loop": "ask",
+        "external_directory": {
+          "/tmp/**": "allow",
+          "*": "ask"
+        }
       }
     }
   },
@@ -99,6 +106,14 @@
         "KINDLY_DIAGNOSTICS": "1"
       },
       "enabled": true
+    },
+    "grepai": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "grepai",
+        "mcp-serve"
+      ]
     }
   },
   "plugin": [
@@ -106,7 +121,7 @@
     "@franlol/opencode-md-table-formatter@0.0.3",
     "cc-safety-net",
     "opencode-handoff",
-    "./.opencode/plugins/session-edits.ts",
+    "oh-my-openagent@latest"
   ],
   "agent": {
     "local": {
