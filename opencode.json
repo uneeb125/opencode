@@ -20,7 +20,7 @@
   "formatter": false,
   "default_agent": "dumbass",
   "model": "opencode-go/minimax-m2.7",
-  "small_model": "opencode/minimax-m2.5",
+  "small_model": "opencode-go/qwen3.5-plus",
   "mode": {
     "dumbass": {
       "model": "opencode-go/minimax-m2.7",
