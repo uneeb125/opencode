@@ -207,7 +207,7 @@ def init_database() -> None:
         )
     """)
     
-    # Tasks from gtasks
+    # Tasks from ntasks
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -215,6 +215,7 @@ def init_database() -> None:
             tasklist TEXT NOT NULL,
             title TEXT NOT NULL,
             notes TEXT,
+            start_date DATE,
             due_date DATE,
             priority INTEGER DEFAULT 0,
             status TEXT DEFAULT 'pending',
@@ -225,7 +226,7 @@ def init_database() -> None:
         )
     """)
     
-    # Calendar events from khal
+    # Calendar events from ncal
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS calendar_events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

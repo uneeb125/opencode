@@ -23,10 +23,10 @@ Usage: /autoscheduler <command> [args]
 Commands:
   init                    Initialize database and configuration
   import-log <path>       Import Simple Tracker CSV export
-  sync                    Sync tasks from gtasks and events from khal
+  sync                    Sync tasks from ntasks and events from ncal
   analyze                 Run statistical analysis on historical data
   plan [YYYY-MM-DD]       Generate AI schedule draft (default: today)
-  commit [YYYY-MM-DD]     Push approved plan to khal Generated calendar
+  commit [YYYY-MM-DD]     Push approved plan to ncal Generated calendar
   stats [activity]        Show historical stats for activities
   suggest-break           Quick recommendation based on today's state
   reconcile [YYYY-MM-DD]  Compare planned vs actual

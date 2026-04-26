@@ -9,7 +9,7 @@ description: AI-powered automatic scheduling system that learns from historical 
 
 An intelligent scheduling system that:
 - **Learns** from your Simple Tracker CSV logs
-- **Syncs** with `gtasks` (tasks) and `khal` (calendar events)
+- **Syncs** with `ntasks` (tasks) and `ncal` (calendar events)
 - **Models** your personal resource state (mental bandwidth, physical energy, willpower)
 - **Tracks** expected vs actual behavior with deviation analysis
 - **Plans** your day considering ADHD, medication timing, energy curves, and task requirements
@@ -21,10 +21,10 @@ An intelligent scheduling system that:
 |---------|-------------|
 | `/autoscheduler init` | Initialize database and configuration |
 | `/autoscheduler import-log <path>` | Import Simple Tracker CSV export |
-| `/autoscheduler sync` | Sync tasks from gtasks and events from khal |
+| `/autoscheduler sync` | Sync tasks from ntasks and events from ncal |
 | `/autoscheduler analyze` | Run statistical analysis on historical data |
 | `/autoscheduler plan [date]` | Generate AI schedule draft (default: today) |
-| `/autoscheduler commit [date]` | Push approved plan to khal Generated calendar |
+| `/autoscheduler commit [date]` | Push approved plan to ncal Generated calendar |
 | `/autoscheduler stats [activity]` | Show historical stats for activities |
 | `/autoscheduler suggest-break` | Quick recommendation based on today's state |
 | `/autoscheduler reconcile [date]` | Compare planned vs actual to improve predictions |
@@ -69,9 +69,9 @@ Comments support resource annotations:
 The database is designed as a repository for modeling expected vs actual behavior:
 
 **Planned Events** (`planned_events`): What was scheduled
-- Populated from khal calendar sync
+- Populated from ncal calendar sync
 - Tracks title, planned start/end, expected duration
-- Source = 'khal' for calendar events
+- Source = 'ncal' for calendar events
 
 **Actual Events** (`actual_events`): What actually happened
 - Populated from Simple Tracker CSV imports
@@ -104,14 +104,14 @@ Builds statistical baselines:
 ### 4. Planning
 The LLM orchestrator:
 - Reads your current resource state
-- Fetches pending tasks from gtasks
-- Fetches fixed events from khal
+- Fetches pending tasks from ntasks
+- Fetches fixed events from ncal
 - Uses historical stats as priors
 - Applies ADHD-aware scheduling (medication peaks, crash windows)
 - Generates a structured schedule with reasoning
 
 ### 5. Commitment
-Approved plans are written to the `Generated` khal calendar as draft events. You review them in your calendar app before finalizing.
+Approved plans are written to the `Generated` ncal calendar. They sync directly to Nextcloud CalDAV.
 
 ## ADHD & Medication Awareness
 
@@ -136,8 +136,8 @@ Tables:
 - `time_patterns`: Learned statistical patterns per activity
 - `daily_summaries`: Aggregate stats per day (planned vs actual ratios)
 - `resource_snapshots`: Historical resource state with medication tracking
-- `tasks`: Pending gtasks items
-- `calendar_events`: Raw synced khal events
+- `tasks`: Pending ntasks items
+- `calendar_events`: Raw synced ncal events
 - `daily_plans`: Generated schedule drafts
 - `plan_items`: Individual time blocks in a plan
 
@@ -153,59 +153,70 @@ Config stored in `~/.config/opencode/skills/autoscheduler/data/config.json`:
 
 - **Always review** generated plans before committing
 - Plans are written to `Generated` calendar, never overwrite fixed events
-- `vdirsyncer sync` runs automatically after committing to push to Google Calendar
+- `ncal sync` runs automatically after committing to push to Nextcloud
+- **All scheduled events must be in the future** — the system checks current date/time before creating any event
+- **Events must fall within the task's date boundaries** — between start date and due date if set, with enough time to complete before the deadline
+- **Earliest-available-first** — tasks are scheduled in the earliest open slot to leave room for unexpected changes later
 - The more data you log, the better the predictions become
 - Resource costs in comments are optional; the system learns defaults over time
 - Database models expected vs actual behavior for insight extraction
 
 ## Tool Reference
 
-### gtasks CLI Format
+### ntasks CLI Format
 
-**List tasklists** (plain text output):
+**List tasks** (show all calendars):
 ```bash
-gtasks tasklists view
-# Output: [1] My Tasks
-#         [2] Assignments
+ntasks list
+# Output: Calendar: Tasks
+#         - [ ] Task Title | start: 2026-04-22 09:00 | due: 2026-04-25 20:00 | priority: 5 | status: todo
 ```
 
-**View tasks** (table format, not JSON):
+**List tasks in a specific calendar**:
 ```bash
-gtasks tasks view -l "My Tasks"
-# Output: Tasks in My Tasks:
-#         NO | TITLE | DESCRIPTION | STATUS | DUE
-#         ---|-------|-------------|--------|-----
-#         1  | Task  |             |pending | 20 April 2026
+ntasks list -c Tasks
 ```
 
-**Important**: `gtasks` does NOT support `--format json` for tasklists view.
-
-### khal CLI Format
-
-**List events** (date range syntax):
+**Add a task**:
 ```bash
-khal list today +7d
-# NOT: khal list today today+7d
+ntasks add "Task Title" --due "2026-04-21" --priority 5 -c Tasks
 ```
 
-**JSON output note**: `khal --json` returns multiple JSON arrays (one per day), not a single array. Use text parsing for reliability.
+### ncal CLI Format
 
-**Create event in specific calendar**:
+**List events** (today):
 ```bash
-khal new -a "Generated" 2026-04-21 10:00 10:30 "Task Title" :: "Description"
+ncal list
+# Output: 2026-04-26
+#         - 04:00 AM - 04:30 AM | Routine | Exercise | location: - | tags: -
+```
+
+**List events by calendar**:
+```bash
+ncal list --calendar Generated
+```
+
+**Create event**:
+```bash
+ncal add -s "2026-04-21T09:00:00" -e "2026-04-21T10:00:00" -c "Generated" "Task Title" -d "Description"
+```
+
+**Available calendars**:
+```bash
+ncal calendars
 ```
 
 ## Troubleshooting
 
 No tasks showing?
 ```bash
-gtasks tasklists view
-gtasks tasks view -l "My Tasks"
+ntasks list
 ```
 
 No calendar events?
 ```bash
-vdirsyncer sync && khal list today
+ncal list
+ncal sync
 ```
 
 Database corrupted?
@@ -216,7 +227,7 @@ rm ~/.config/opencode/skills/autoscheduler/data/data.db
 
 ## Requirements
 
-- `gtasks` CLI authenticated
-- `khal` and `vdirsyncer` configured
-- Python 3.8+
+- `ncal` configured with Nextcloud CalDAV
+- `ntasks` configured with Nextcloud CalDAV
+- Python 3.12+
 - SQLite3

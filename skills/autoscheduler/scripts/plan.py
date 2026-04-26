@@ -42,7 +42,7 @@ def get_fixed_events(target_date: date) -> list:
 
 
 def get_pending_tasks() -> list:
-    """Get pending tasks from gtasks, sorted by priority."""
+    """Get pending tasks from ntasks, sorted by priority."""
     db = get_db()
     cursor = db.cursor()
     
