@@ -89,19 +89,19 @@ def sync_ntasks() -> int:
         tasks = parse_ntasks_output(result.stdout)
 
         for task in tasks:
-            cursor.execute("SELECT id FROM tasks WHERE gtasks_id = ?", (task["id"],))
+            cursor.execute("SELECT id FROM tasks WHERE task_id = ?", (task["id"],))
             existing = cursor.fetchone()
 
             if existing:
                 cursor.execute("""
                     UPDATE tasks 
                     SET tasklist = ?, title = ?, notes = ?, start_date = ?, due_date = ?, priority = ?, status = 'pending'
-                    WHERE gtasks_id = ?
+                    WHERE task_id = ?
                 """, (task["tasklist"], task["title"], task["notes"], task["start"], task["due"], task["priority"], task["id"]))
             else:
                 cursor.execute("""
                     INSERT INTO tasks 
-                    (gtasks_id, tasklist, title, notes, start_date, due_date, priority, status)
+                    (task_id, tasklist, title, notes, start_date, due_date, priority, status)
                     VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
                 """, (task["id"], task["tasklist"], task["title"], task["notes"], task["start"], task["due"], task["priority"]))
             count += 1

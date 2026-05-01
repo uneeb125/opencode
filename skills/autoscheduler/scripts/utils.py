@@ -211,7 +211,7 @@ def init_database() -> None:
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            gtasks_id TEXT UNIQUE NOT NULL,
+            task_id TEXT UNIQUE NOT NULL,
             tasklist TEXT NOT NULL,
             title TEXT NOT NULL,
             notes TEXT,
@@ -222,6 +222,7 @@ def init_database() -> None:
             estimated_duration_minutes INTEGER,
             required_resources TEXT,
             category TEXT,
+            scheduled_at TIMESTAMP,
             added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -283,7 +284,13 @@ def init_database() -> None:
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_calendar_events_time ON calendar_events(start_time, end_time)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_daily_plans_date ON daily_plans(plan_date)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_plan_items_plan ON plan_items(plan_id)")
-    
+
+    # Migrate: add scheduled_at to tasks if missing
+    cursor.execute("PRAGMA table_info(tasks)")
+    columns = [row[1] for row in cursor.fetchall()]
+    if "scheduled_at" not in columns:
+        cursor.execute("ALTER TABLE tasks ADD COLUMN scheduled_at TIMESTAMP")
+
     conn.commit()
     conn.close()
 

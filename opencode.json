@@ -121,7 +121,6 @@
     "@franlol/opencode-md-table-formatter@0.0.3",
     "cc-safety-net",
     "opencode-handoff",
-    "oh-my-openagent@latest"
   ],
   "agent": {
     "local": {

@@ -15,19 +15,36 @@ An intelligent scheduling system that:
 - **Plans** your day considering ADHD, medication timing, energy curves, and task requirements
 - **Commits** approved plans to a dedicated `Generated` calendar
 
-## Commands
+## Natural Language Interface
+
+This skill is designed to be invoked through natural language. The user should never need to type raw CLI flags.
+
+| User says | Action to take |
+|-----------|----------------|
+| "Schedule my tasks for tomorrow" or "I have new tasks, schedule them" | Run dry-run first: `schedule-tasks -c Tasks -d <tomorrow>` |
+| "...give me a dry run first" or "...show me the draft" | Same as above — always dry-run first unless user explicitly says "commit" or "create them" |
+| "Looks good, commit it" or "Go ahead and create them" | Re-run with `--commit` |
+| "Schedule my Tasks list for Monday" | `schedule-tasks -c Tasks -d 2026-04-27` |
+| "Plan my day" | `plan` then `commit` after approval |
+| "Sync my data" | `sync` |
+| "Analyze my patterns" | `analyze` |
+
+## Internal Commands
+
+These are the underlying commands the system runs. They should not be exposed to the user directly.
 
 | Command | Description |
 |---------|-------------|
-| `/autoscheduler init` | Initialize database and configuration |
-| `/autoscheduler import-log <path>` | Import Simple Tracker CSV export |
-| `/autoscheduler sync` | Sync tasks from ntasks and events from ncal |
-| `/autoscheduler analyze` | Run statistical analysis on historical data |
-| `/autoscheduler plan [date]` | Generate AI schedule draft (default: today) |
-| `/autoscheduler commit [date]` | Push approved plan to ncal Generated calendar |
-| `/autoscheduler stats [activity]` | Show historical stats for activities |
-| `/autoscheduler suggest-break` | Quick recommendation based on today's state |
-| `/autoscheduler reconcile [date]` | Compare planned vs actual to improve predictions |
+| `init` | Initialize database and configuration |
+| `import-log <path>` | Import Simple Tracker CSV export |
+| `sync` | Sync tasks from ntasks and events from ncal |
+| `analyze` | Run statistical analysis on historical data |
+| `plan [date]` | Generate AI schedule draft (default: today) |
+| `commit [date]` | Push approved plan to ncal Generated calendar |
+| `schedule-tasks [args]` | Schedule ntasks items as ncal events (dry-run by default) |
+| `stats [activity]` | Show historical stats for activities |
+| `suggest-break` | Quick recommendation based on today's state |
+| `reconcile [date]` | Compare planned vs actual to improve predictions |
 
 ## Quick Start
 
@@ -49,6 +66,52 @@ An intelligent scheduling system that:
 
 # 6. Review the output, then commit
 /autoscheduler commit
+```
+
+## Schedule Tasks from ntasks
+
+Convert tasks from `ntasks` into calendar events on `ncal`.
+
+### Natural Language Flow
+
+**User:** "I have 2 new tasks in my Tasks list. Schedule them for tomorrow. Give me a dry run draft first."
+
+**System action:**
+1. Run `schedule-tasks -c Tasks -d <tomorrow>` (dry-run)
+2. Show the draft to the user with proposed slots and any conflicts
+3. Wait for approval
+
+**User:** "Looks good, commit it."
+
+**System action:**
+4. Run `schedule-tasks -c Tasks -d <tomorrow> --commit`
+5. Confirm events were created
+
+### How Task Scheduling Works
+
+- **Task start date** = earliest the task can begin (prerequisites satisfied)
+- **Task due date** = hard deadline; must be completed by this time
+- The system finds the **earliest available free slot** within that window
+- Checks against **existing calendar events** to avoid conflicts
+- Skips tasks that already exist as calendar events (duplicate detection)
+- Tags created events with `scheduled` so you can identify them in ncal
+- Tracks scheduled status in local database
+- Default duration is 60 minutes; heuristics adjust for common task types (email=30m, meeting=60m, research=120m)
+
+### Tracking Scheduled Tasks
+
+- **ncal events**: automatically tagged with `scheduled` (e.g., `tags: Coms,scheduled`)
+- **Local database**: `tasks.scheduled_at` timestamp records when it was scheduled
+- To see which tasks are already scheduled, query the database or look for the `scheduled` tag in ncal
+
+### Command Options (internal use only)
+
+```bash
+-c, --calendar      ntasks calendar name (default: Tasks)
+-d, --target-date   Date to schedule for (default: tomorrow)
+-t, --target-cal    ncal calendar to create events in (default: Generated)
+--commit            Actually create events (without this, dry-run only)
+--default-duration  Default task duration in minutes (default: 60)
 ```
 
 ## How It Works

@@ -13,6 +13,7 @@ import sync
 import analyze
 import plan
 import commit
+import schedule_tasks
 
 
 def print_help():
@@ -27,6 +28,8 @@ Commands:
   analyze                 Run statistical analysis on historical data
   plan [YYYY-MM-DD]       Generate AI schedule draft (default: today)
   commit [YYYY-MM-DD]     Push approved plan to ncal Generated calendar
+  schedule-tasks [args]   Schedule ntasks items as ncal events (dry-run by default)
+  schedule [args]         Alias for schedule-tasks
   stats [activity]        Show historical stats for activities
   suggest-break           Quick recommendation based on today's state
   reconcile [YYYY-MM-DD]  Compare planned vs actual
@@ -39,6 +42,10 @@ Quick Start:
   /autoscheduler analyze
   /autoscheduler plan
   /autoscheduler commit
+
+Schedule Tasks:
+  /autoscheduler schedule-tasks -c Tasks -d 2026-04-27
+  /autoscheduler schedule-tasks -c Tasks -d 2026-04-27 --commit
 """)
 
 
@@ -74,6 +81,9 @@ def main():
         else:
             sys.argv = [sys.argv[0]]
         commit.main()
+    elif command in ("schedule-tasks", "schedule"):
+        sys.argv = [sys.argv[0]] + args
+        schedule_tasks.main()
     elif command == "stats":
         print("Stats command not yet implemented. Use /autoscheduler analyze for now.")
     elif command == "suggest-break":
