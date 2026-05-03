@@ -19,11 +19,10 @@
   },
   "formatter": false,
   "default_agent": "dumbass",
-  "model": "opencode-go/minimax-m2.7",
-  "small_model": "opencode-go/qwen3.5-plus",
+  "model": "deepseek/deepseek-v4-flash",
+  "small_model": "deepseek/deepseek-v4-flash",
   "mode": {
     "dumbass": {
-      "model": "opencode-go/minimax-m2.7",
       "permission": {
         "edit": "ask",
         "write": "ask",
@@ -48,32 +47,6 @@
         }
       }
     },
-    "quick": {
-      "model": "opencode-go/qwen3.5-plus",
-      "permission": {
-        "edit": "ask",
-        "write": "ask",
-        "bash": {
-          "cd *": "allow",
-          "rg *": "allow",
-          "ls *": "allow",
-          "grep *": "allow",
-          "head *": "allow",
-          "find *": "allow",
-          "*": "ask",
-          "git *": "ask",
-          "git status *": "ask",
-          "git commit *": "deny",
-          "git push *": "deny"
-        },
-        "webfetch": "allow",
-        "doom_loop": "ask",
-        "external_directory": {
-          "/tmp/**": "allow",
-          "*": "ask"
-        }
-      }
-    }
   },
   "lsp": {
     "kotlin-ls": {
@@ -122,34 +95,4 @@
     "cc-safety-net",
     "opencode-handoff",
   ],
-  "agent": {
-    "local": {
-      "description": "Reviews code for best practices and potential issues",
-      "mode": "primary",
-      "model": "lmstudio/gemma-4-e4b-it",
-      "prompt": "You are inside a harness Opencode",
-      "tools": {
-        "write": true,
-        "edit": true
-      }
-    },
-    "explore": {
-      "disable": true
-    },
-    "general": {
-      "disable": true
-    },
-    "visor": {
-      "disable": true,
-      "mode": "subagent",
-      "model": "zai-coding-plan/glm-4.6v",
-      "description": "Use this subagent EXCLUSIVELY for image analysis. The orchestrator will provide an image file path and specific instructions on what information to extract. Your role is to use the look_at tool to examine the image and provide detailed analysis according to the orchestrator's requirements.",
-      "prompt": "You are an image analysis assistant powered by GLM-4.6v. Your ONLY purpose is to analyze images using the look_at tool. When given an image file path, use look_at to examine the image and extract the specific information requested by the orchestrator. Provide detailed, accurate analysis of visual content including text, diagrams, code, diagrams, charts, interfaces, or any other elements visible in the image. Do not perform any other tasks - focus solely on image analysis.",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    }
-  }
 }
