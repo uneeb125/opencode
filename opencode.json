@@ -19,8 +19,8 @@
   },
   "formatter": false,
   "default_agent": "dumbass",
-  "model": "deepseek/deepseek-v4-flash",
-  "small_model": "deepseek/deepseek-v4-flash",
+  "model": "opencode_go/deepseek-v4-flash",
+  "small_model": "opencode_go/deepseek-v4-flash",
   "mode": {
     "dumbass": {
       "permission": {
