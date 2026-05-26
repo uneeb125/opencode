@@ -1,26 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "lmstudio": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio (local)",
-      "options": {
-        "baseURL": "http://localhost:1234/v1"
-      },
-      "models": {
-        "google/gemma-4-26b-a4b": {
-          "name": "google/gemma-4-26b-a4b"
-        },
-        "gemma-4-e4b-it": {
-          "name": "gemma-4-e4b-it"
-        }
-      }
-    }
-  },
   "formatter": false,
   "default_agent": "dumbass",
-  "model": "opencode_go/deepseek-v4-flash",
-  "small_model": "opencode_go/deepseek-v4-flash",
+  "model": "opencode-go/deepseek-v4-flash",
+  "small_model": "opencode-go/deepseek-v4-flash",
   "mode": {
     "dumbass": {
       "permission": {
@@ -80,19 +63,10 @@
       },
       "enabled": true
     },
-    "grepai": {
-      "type": "local",
-      "enabled": true,
-      "command": [
-        "grepai",
-        "mcp-serve"
-      ]
-    }
   },
   "plugin": [
-    "@tarquinen/opencode-dcp@latest",
     "@franlol/opencode-md-table-formatter@0.0.3",
     "cc-safety-net",
-    "opencode-handoff",
+    "@slkiser/opencode-quota",
   ],
 }
