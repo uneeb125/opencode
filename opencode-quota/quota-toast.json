@@ -1,16 +1,27 @@
 {
-  "enabledProviders": ["opencode-go"],
+  "enabledProviders": [
+    "opencode-go"
+  ],
   "enableToast": false,
   "formatStyle": "allWindows",
   "tuiSidebarPanel": {
     "enabled": true
   },
   "tuiCompactStatus": {
-    "enabled": true
+    "enabled": true,
+    "homeBottom": true,
+    "sessionPrompt": true,
+    "suppressWhenNativeProviderQuota": true
   },
   "maintainerAnnouncements": {
     "enabled": true,
     "home": true
   },
-  "opencodeGoWindows": ["rolling", "weekly", "monthly"]
+  "opencodeGoWindows": [
+    "rolling",
+    "weekly",
+    "monthly"
+  ],
+  "showSessionTokens": true,
+  "percentDisplayMode": "remaining"
 }
