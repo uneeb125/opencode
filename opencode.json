@@ -1,12 +1,14 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "formatter": false,
+    "graphicsMode": "kitty",
+    "pixelRatio": 3,
     "default_agent": "dumbass",
-    "model": "opencode-go/deepseek-v4-pro",
-    "small_model": "opencode-go/deepseek-v4-flash",
+    "model": "opencode-go/omen-alpha",
+    "small_model": "opencode-go/muse-spark-1.3-contributor",
     "agent": {
         "explore": {
-            "model": "opencode-go/deepseek-v4-flash"
+            "model": "opencode-go/muse-spark-1.3-contributor"
         },
     },
     "mode": {
@@ -52,52 +54,7 @@
     }
     },
     "mcp": {
-        "kindly-web-search": {
-            "type": "local",
-            "command": [
-                "uvx",
-                "--from",
-                "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server",
-                "kindly-web-search-mcp-server",
-                "start-mcp-server"
-            ],
-            "enabled": true
-        },
-        "firefox-devtools": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "firefox-devtools-mcp@latest"
-            ],
-            "enabled": true
-        },
-        "firefox-devtools-headless": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "firefox-devtools-mcp@latest",
-                "--headless",
-                "--viewport",
-                "1280x720"
-            ],
-            "enabled": true
-        },
-        "exa": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "exa-mcp-server"
-            ],
-            "enabled": true
-        }
     },
     "plugin": [
-        "opencode-dir",
-        "@franlol/opencode-md-table-formatter@0.0.3",
-        "cc-safety-net",
-        "@slkiser/opencode-quota",
     ],
 }
