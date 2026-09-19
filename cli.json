@@ -15,6 +15,8 @@
     "session.export": "<leader>x",
     "session.new": "<leader>n",
     "session.list": "<leader>l",
+    "session.tab.next": "alt+up",
+    "session.tab.previous": "alt+down",
     "session.timeline": "<leader>g",
     "session.fork": "none",
     "session.rename": "none",
@@ -111,7 +113,7 @@
     "sidebar": "hide",
     "scrollbar": true,
     "thinking": "hide",
-    "grouping": "auto",
+    "grouping": "none",
     "image_preview": true,
     "new_location": "launch",
     "markdown": "rendered"

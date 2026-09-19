@@ -4,14 +4,19 @@
     "graphicsMode": "kitty",
     "pixelRatio": 3,
     "default_agent": "dumbass",
-    "model": "opencode-go/omen-alpha",
+    "model": "opencode-go/deepseek-v4.1-flash",
     "small_model": "opencode-go/muse-spark-1.3-contributor",
     "agent": {
         "explore": {
             "model": "opencode-go/muse-spark-1.3-contributor"
         },
     },
-    "mode": {
+      "server": {
+        "hostname": "0.0.0.0",
+        "port": 4096,
+        "mdns": false
+      },
+    "agent": {
         "dumbass": {
             "permission": {
                 "edit": "ask",
@@ -54,6 +59,29 @@
     }
     },
     "mcp": {
+      "servers": {
+        "drawio": {
+          "type": "local",
+          "command": [
+            "npx",
+            "-y",
+            "@drawio/mcp"
+          ]
+        },
+        "firefox-devtools": {
+          "type": "local",
+          "command": [
+            "npx",
+            "-y",
+            "@mozilla/firefox-devtools-mcp@latest",
+            "--viewport",
+            "1280x720"
+          ],
+          "environment": {
+            "DISPLAY": ":1"
+          }
+        }
+      }
     },
     "plugin": [
     ],
