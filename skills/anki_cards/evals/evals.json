@@ -1,0 +1,23 @@
+{
+  "skill_name": "anki_cards",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've got my CSE 511 lecture slides as PDFs in ~/Vault/PSU/CW/CSE511/new slides (11 decks, lots of diagrams). Make me Anki cloze cards for the midterm — I use the Better Markdown Anki addon. Give me a file I can import.",
+      "expected_output": "Per-deck markdown card files plus a tab-separated import file with the Better Markdown : Cloze headers (#notetype, #tags column, #deck column). Must NOT produce a .apkg. Cards are markdown cloze ({{c1::...}}), code kept in fenced blocks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Here are my markdown notes on thread scheduling: ~/Vault/PSU/CW/CSE511/slide notes/04_threads-scheduling.md. Turn them into Anki flashcards with cloze deletions and give me something I can import. Include some code/pseudocode questions.",
+      "expected_output": "A markdown card file authored per references/card-authoring.md and an anki-import.txt built by scripts/build_import.py, targeting the Better Markdown : Cloze note type via file headers.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I imported my deck into Anki and now there's a second note type called 'Better Markdown : Cloze+' and my cards are in it, not the addon's note type. What went wrong and how do I fix it?",
+      "expected_output": "Explains that Anki matches note types by ID not name, so an .apkg created a duplicate; instructs deleting the duplicate via Tools > Manage Note Types and re-importing via the text file with headers. Does not suggest another .apkg.",
+      "files": []
+    }
+  ]
+}

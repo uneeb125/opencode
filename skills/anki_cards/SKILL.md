@@ -1,72 +1,67 @@
 ---
 name: anki_cards
-description: Build Anki cloze-deletion flashcards (markdown + KaTeX + code) and import them into Anki via the Better Markdown Anki add-on. Use when the user wants to create, generate, convert, or import Anki cards / flashcards / spaced-repetition decks, make cloze deletions, or turn lecture notes, slides, PDFs, or a vault of notes into Anki cards.
+description: Build Anki cloze-deletion flashcards from notes, slides, or PDFs and import them into Anki through the Better Markdown Anki add-on (markdown + KaTeX + syntax-highlighted code). Use this whenever the user wants to make, generate, convert, or import Anki cards / flashcards / a spaced-repetition deck; turn lecture notes, slides, a PDF, or a notes vault into Anki cards; write cloze deletions; fix or re-import an Anki deck; or asks why their cards won't import. If the user is studying for an exam and has material, reach for this even when they don't say "Anki".
 ---
 
-# Skill: Anki cloze cards (Better Markdown Anki)
+# Anki cloze cards (Better Markdown Anki)
 
-End-to-end recipe for turning notes/slides into Anki cloze cards that import cleanly
-into the **Better Markdown Anki** add-on (https://ankiweb.net/shared/info/2100166052).
-Follow this instead of rediscovering the format each time.
+Turn source material into Anki cloze cards that import cleanly into the **Better Markdown
+Anki** add-on (https://ankiweb.net/shared/info/2100166052). The add-on renders markdown,
+KaTeX (`$...$`, `$$...$$`), and syntax-highlighted code, and supports clozes whose content
+keeps its formatting (code/math inside a cloze).
 
-## The one hard rule
+## Why the import path matters (read first)
 
-**Never ship a `.apkg` to target the add-on's note type.** Anki matches note types by
-**ID, not name**. The add-on's note type gets a random ID, so any `.apkg` you generate
-creates a *duplicate* note type (Anki renames it with a `+` suffix). Always import via a
-**text file with file headers**, which lets Anki target the exact existing note type.
+Anki matches note types by **ID, not name**. The add-on creates its note type with a random
+ID, so a `.apkg` you generate will *never* attach to it — Anki silently makes a duplicate
+note type (renamed with a `+` suffix). That is the single most common way this task goes
+wrong, so don't reach for `genanki`/`.apkg` at all.
+
+The reliable path is a **text import file with file headers**. Anki's text importer lets you
+target the existing note type by name and set the note's fields, tags, and deck per row. The
+whole workflow builds toward that one file.
 
 ## Target format
 
-- **Note type name:** `Better Markdown : Cloze` (exactly — spaces around the colon)
-- **Fields:** `Text`, `Back Extra`, `Difficulty` (order matters)
-- **Type:** Cloze
-- Rendered by the add-on: markdown, KaTeX (`$...$`, `$$...$$`), syntax-highlighted
-  fenced code, and clozes whose content keeps its formatting (code/math inside a cloze).
-- `Back Extra` / `Difficulty` may be left empty.
+- Note type: `Better Markdown : Cloze` (exact spacing around the colon)
+- Fields: `Text`, `Back Extra`, `Difficulty` (order matters)
+- Type: Cloze; `Back Extra` / `Difficulty` may be left empty.
 
-## Workflow
+## Fast path — you already have markdown notes
 
-### 1. Get the content
-- If the source is PDF slides: render pages to images and read them **one image per
-  read call** (vision fails with multiple images in one call):
-  ```bash
-  pdftoppm -png -r 200 deck.pdf /tmp/cards/deck/page
-  ```
-  Analyze and write a per-deck markdown note first (the `vision_pdf` skill covers this).
-- If the source is already notes/markdown, skip to step 2.
+1. Write one markdown card file per deck in a cards directory, named `01_topic.md`, `02_topic.md`, …
+   (authoring rules: `references/card-authoring.md`).
+2. Build the import file:
+   ```bash
+   uv run python scripts/build_import.py <cards_dir> \
+     --deck-prefix "CSE 511" --tag-prefix CSE511 --out <cards_dir>/anki-import.txt
+   ```
+3. In Anki: **File → Import…** → the `.txt`. In the preview confirm note type
+   `Better Markdown : Cloze`, `Text` ← column 1, tags ← column 2, deck ← column 3, then import.
 
-### 2. Author cards — one markdown file per deck
-Put them in a cards directory (e.g. `anki/`), named `01_topic.md`, `02_topic.md`, …
-Card file rules (also see `scripts/build_import.py` docstring):
+`scripts/build_import.py` is deterministic — the intelligence is in the card files, so spend
+your effort there.
 
-- First line: `# <Deck Title> — Cloze Cards`
-- One card = **one markdown paragraph** (blank line between cards).
-- Cloze syntax: `{{c1::...}}`, `{{c2::...}}`, 1–4 per card. Each cloze tests one
-  unambiguous fact. Never nest clozes; never put cloze markers in a heading.
-- Lead with the term in `**bold**` where natural. Use `$...$` for math and `` `code` ``
-  inline. Put multi-line code in fenced blocks with a language tag (```c, ```text).
-- **Cloze inside code/math is supported by the add-on**, but the safe default is:
-  show the code as visible context and cloze the answer in prose or inline code, e.g.
-  `... the atomic instruction {{c1::`lock xchg`}} ...`
-- Group cards under `## <Section>` headings (they become tag sub-levels).
-- Include a `## Code & Pseudocode` section when the material has code.
-- Target ~15–20 cards per deck. Ground every card in the source; never invent facts.
+## Full path — source is slides / PDFs
 
-Example card:
-```
-**Bias** is the error from a model's {{c1::simplifying assumptions}}, leading to {{c2::underfitting}}. It measures how far the average prediction is from the true value.
-```
+1. **Extract content.** For PDF slides, render pages and read them **one image per read call**
+   (vision fails when several images are sent together):
+   ```bash
+   pdftoppm -png -r 200 deck.pdf /tmp/cards/deck/page
+   ```
+   For decks that only exist in a browser, or for richer PDF handling, prefer the dedicated
+   `pdf`, `pptx`, or `slides_to_searchable_pdf` skill.
+2. **Write per-deck study notes** (the `vision_pdf` skill covers the diagram-heavy reading).
+   Keep code verbatim and interpret diagrams — cards will be built from these notes.
+3. **Author card files** from the notes (`references/card-authoring.md`). With many decks,
+   delegate one deck per subagent: each reads its note and writes its card file, which
+   parallelizes cleanly.
+4. **Build and import** as in the fast path.
 
-If there are many decks, delegate one deck per subagent (each reads its source note and
-writes its card file) — this parallelizes well.
+## The import file (what the script emits)
 
-### 3. Build the import file
-```bash
-uv run python ~/.config/opencode/skills/anki_cards/scripts/build_import.py <cards_dir> \
-  --deck-prefix "CSE 511" --tag-prefix CSE511 --out <cards_dir>/anki-import.txt
-```
-This emits a tab-separated file whose headers preset everything:
+Tab-separated, one note per line, with headers that preset everything:
+
 ```
 #separator:tab
 #html:true
@@ -75,24 +70,33 @@ This emits a tab-separated file whose headers preset everything:
 #deck column:3
 #columns:Text	Tags	Deck
 ```
-It escapes `& < >` and stores newlines as `<br>` (Anki cloze notes cannot span literal
-lines; the add-on converts `<br>` back to newlines inside code fences).
 
-### 4. Import in Anki
-**File → Import…** → select the `.txt`. In the preview confirm the note type is exactly
-`Better Markdown : Cloze`, `Text` ← column 1, and the deck column is applied, then import.
-File headers require Anki **2.1.54+**; if the note type isn't auto-selected, pick it manually.
+Two encoding choices in the script exist for concrete reasons, so keep them:
+
+- **`<br>` for newlines** — an Anki cloze note cannot contain literal line breaks, so the
+  script joins lines with `<br>` and sets `#html:true`. The add-on converts `<br>` back to
+  newlines inside code fences, so multi-line code survives.
+- **`&`/`<`/`>` escaped** as `&amp;`/`&lt;`/`&gt;` — otherwise Anki's HTML parser can swallow
+  a stray `<` such as the one in `C(a) < C(b)`. The add-on decodes entities on render.
+
+The script also merges a blank-line-separated segment that has no `{{cN::…}}` (for example a
+code block shown as context) into the next cloze-bearing card, so a code snippet never becomes
+an invalid cloze-less note. Headings become decks/sections: `# Title` names the deck,
+`## Section` becomes a tag level.
 
 ## Troubleshooting
 
-- **Note type shows a `+` suffix / duplicate created:** you imported a `.apkg`. Delete the
-  duplicate via **Tools → Manage Note Types** (confirm deleting its cards), then import the `.txt`.
-- **Cards render literally (`**bold**`, `$x$`):** the Better Markdown add-on isn't installed/enabled.
-- **Code blocks lose their line breaks:** the field must use `<br>` (this script does).
-- **`<` disappears from a formula:** escape it as `&lt;` (this script does).
-- **Duplicates on re-import:** text imports dedupe on the first field; use the import dialog's
-  *update existing notes* option.
+| Symptom | Cause / fix |
+| --- | --- |
+| Note type shows a `+` suffix, or a duplicate appears | A `.apkg` was imported. Delete the duplicate in **Tools → Manage Note Types** (confirm deleting its cards), then import the `.txt`. |
+| Cards show `**bold**` / `$x$` literally | The Better Markdown add-on isn't installed/enabled. |
+| Code blocks collapse to one line | Newlines weren't stored as `<br>` (see above). |
+| A `<` vanishes from a formula | It wasn't escaped as `&lt;`. |
+| Note type not auto-selected on import | File headers need Anki **2.1.54+**; pick `Better Markdown : Cloze` manually in the dialog. |
+| Duplicates on re-import | Text imports dedupe on the first field; choose *update existing notes* in the dialog. |
 
 ## Files
 
-- `scripts/build_import.py` — the converter described above.
+- `scripts/build_import.py` — markdown card files → Anki import file (the only executable step).
+- `references/card-authoring.md` — how to write cards worth studying (read before authoring).
+- `evals/evals.json` — sample prompts for testing this skill.
