@@ -1,88 +1,84 @@
 {
-    "$schema": "https://opencode.ai/config.json",
-    "formatter": false,
-    "graphicsMode": "kitty",
-    "pixelRatio": 3,
-    "default_agent": "dumbass",
-    "model": "opencode-go/deepseek-v4.1-flash",
-    "small_model": "opencode-go/muse-spark-1.3-contributor",
-    "agent": {
-        "explore": {
-            "model": "opencode-go/muse-spark-1.3-contributor"
+  "$schema": "https://opencode.ai/config.json",
+  "formatter": false,
+  "graphicsMode": "kitty",
+  "pixelRatio": 3,
+  "default_agent": "dumbass",
+  "model": "opencode-go/deepseek-v4.1-flash",
+  "small_model": "opencode-go/muse-spark-1.3-contributor",
+  "agent": {
+    "dumbass": {
+      "permission": {
+        "edit": "ask",
+        "write": "ask",
+        "bash": {
+          "cd *": "allow",
+          "rg *": "allow",
+          "ls *": "allow",
+          "grep *": "allow",
+          "head *": "allow",
+          "find *": "allow",
+          "*": "ask",
+          "git *": "ask",
+          "git status *": "ask",
+          "git commit *": "deny",
+          "git push *": "deny"
         },
-    },
-      "server": {
-        "hostname": "0.0.0.0",
-        "port": 4096,
-        "mdns": false
-      },
-    "agent": {
-        "dumbass": {
-            "permission": {
-                "edit": "ask",
-                "write": "ask",
-                "bash": {
-                    "cd *": "allow",
-                    "rg *": "allow",
-                    "ls *": "allow",
-                    "grep *": "allow",
-                    "head *": "allow",
-                    "find *": "allow",
-                    "*": "ask",
-                    "git *": "ask",
-                    "git status *": "ask",
-                    "git commit *": "deny",
-                    "git push *": "deny"
-                },
-                "webfetch": "ask",
-                "doom_loop": "ask",
-                "external_directory": {
-                    "/tmp/**": "allow",
-                    "*": "ask"
-                }
-            }
-        },
-    },
+        "webfetch": "ask",
+        "doom_loop": "ask",
+        "external_directory": {
+          "/tmp/**": "allow",
+          "*": "ask"
+        }
+      }
+    }
+  },
+  "server": {
+    "hostname": "0.0.0.0",
+    "port": 4096,
+    "mdns": false
+  },
   "permission": {
     "external_directory": {
       "/tmp/**": "allow"
     }
   },
-    "lsp": {
-        "kotlin-ls": {
-            "disabled": true
-        },
+  "lsp": {
+    "kotlin-ls": {
+      "disabled": true
+    },
     "rust": {
       "command": [
         "/usr/bin/lspmux"
       ]
     }
-    },
-    "mcp": {
-      "servers": {
-        "drawio": {
-          "type": "local",
-          "command": [
-            "npx",
-            "-y",
-            "@drawio/mcp"
-          ]
+  },
+  "mcp": {
+    "servers": {
+      "drawio": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@drawio/mcp"
+        ],
+        "disabled": true
+      },
+      "firefox-devtools": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@mozilla/firefox-devtools-mcp@latest",
+          "--viewport",
+          "1280x720"
+        ],
+        "environment": {
+          "DISPLAY": ":1"
         },
-        "firefox-devtools": {
-          "type": "local",
-          "command": [
-            "npx",
-            "-y",
-            "@mozilla/firefox-devtools-mcp@latest",
-            "--viewport",
-            "1280x720"
-          ],
-          "environment": {
-            "DISPLAY": ":1"
-          }
-        }
+        "disabled": true
       }
-    },
-    "plugin": [
-    ],
+    }
+  },
+  "plugin": []
 }
